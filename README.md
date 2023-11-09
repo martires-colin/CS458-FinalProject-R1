@@ -1,1 +1,3 @@
 # CS458 Final Project Group R1
+
+Make a COVID-19 dataset for Tensorflow and perform simple analysis. Extract data from https://github.com/CSSEGISandData/COVID-19 (or any other COVID-19 repo that is not formatted in Tensorflow format). Then use Tensorflow’s API to create a dataset that is ready for Tensorflow: https://www.tensorflow.org/datasets/add_dataset. Please make sure you clean the data first. You need to separate the data into training and evaluation datasets. Please also make some simple analysis for the data as well: e.g., compute the mean, standard deviation, variance, ADD, MAD, and distribution that we introduced in the class. You can also use visualization to demonstrate the data and your analysis results.

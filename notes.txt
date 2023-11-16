@@ -1,0 +1,35 @@
+import os
+import pandas as pd
+import tensorflow as tf
+from sklearn.model_selection import train_test_split
+
+# Assuming you have cloned the repository and the path is correct
+directory = 'COVID-19/csse_covid_19_data/csse_covid_19_daily_reports_us/'
+
+# List all CSV files
+csv_files = [f for f in os.listdir(directory) if f.endswith('.csv')]
+
+# Read and concatenate data
+dataframes = [pd.read_csv(directory + file) for file in csv_files]
+full_data = pd.concat(dataframes, ignore_index=True)
+
+# Data cleaning (example)
+# Handle missing values, rename columns, etc.
+# full_data = full_data.dropna()  # Example: Drop rows with missing values
+
+# Data transformation (if needed)
+# Normalize, encode, etc.
+
+# Splitting data into training and evaluation datasets
+train_data, eval_data = train_test_split(full_data, test_size=0.2)
+
+# Convert to TensorFlow Dataset
+train_dataset = tf.data.Dataset.from_tensor_slices(dict(train_data))
+eval_dataset = tf.data.Dataset.from_tensor_slices(dict(eval_data))
+
+# Batch and shuffle the data for training
+train_dataset = train_dataset.shuffle(len(train_data)).batch(32)
+eval_dataset = eval_dataset.batch(32)
+
+# Further processing and model training
+# ...

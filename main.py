@@ -3,6 +3,7 @@ import pandas as pd
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from util import *
 
 # Assuming you have cloned the repository and the path is correct
 directory = './csse_covid_19_daily_reports_us/'
@@ -13,11 +14,11 @@ csv_files_2021 = [f for f in os.listdir(directory) if f.endswith('2021.csv')]
 csv_files_2022 = [f for f in os.listdir(directory) if f.endswith('2022.csv')]
 csv_files_2023 = [f for f in os.listdir(directory) if f.endswith('2023.csv')]
 
-print(len(csv_files))
+# print(len(csv_files))
 
-print(len(csv_files_2021))
-print(len(csv_files_2022))
-print(len(csv_files_2023))
+# print(len(csv_files_2021))
+# print(len(csv_files_2022))
+# print(len(csv_files_2023))
 
 # Initialize an empty list to store DataFrames
 dataframes_2021 = []
@@ -49,10 +50,11 @@ full_data_2022 = pd.concat(dataframes_2022, ignore_index=True)
 full_data_2023 = pd.concat(dataframes_2023, ignore_index=True)
 full_data = pd.concat(dataframes, ignore_index=True)
 
-print(f"Total records after concatenation: {len(full_data_2021)}")
-print(f"Total records after concatenation: {len(full_data_2022)}")
-print(f"Total records after concatenation: {len(full_data_2023)}")
-print(f"Total records after concatenation: {len(full_data)}")
+# print(f"Total records after concatenation: {len(full_data_2021)}")
+# print(f"Total records after concatenation: {len(full_data_2022)}")
+# print(f"Total records after concatenation: {len(full_data_2023)}")
+# print(f"Total records after concatenation: {len(full_data)}")
+
 # Data cleaning and transformation
 # Convert categorical columns using Label Encoding or One-Hot Encoding
 # For example, if 'category_column' is a categorical column:
@@ -63,17 +65,20 @@ print(f"Total records after concatenation: {len(full_data)}")
 full_data_2021 = full_data_2021.fillna(0)  # Or another appropriate value
 full_data_2022 = full_data_2022.fillna(0)  # Or another appropriate value
 full_data_2023 = full_data_2023.fillna(0)  # Or another appropriate value
-full_data = full_data_2023.fillna(0)
+full_data = full_data.fillna(0)
 
 confirmed_data_2021 = full_data_2021["Confirmed"]
 confirmed_data_2022 = full_data_2022["Confirmed"]
 confirmed_data_2023 = full_data_2023["Confirmed"]
 confirmed_data = full_data_2023["Confirmed"]
 
-print(sum(confirmed_data), "sum confirmed")
-print((confirmed_data))
+# print(sum(confirmed_data), "sum confirmed")
+# print((confirmed_data))
 
-
+print(len(full_data))
+print(len(full_data_2021))
+print(len(full_data_2022))
+print(len(full_data_2023))
 
 # Convert to TensorFlow Dataset
 # train_data_2021, eval_data_2021 = train_test_split(confirmed_data_2021, test_size=0.2)
@@ -121,10 +126,10 @@ totalMean = tf.reduce_mean(train_dataset)
 mean2021 = tf.reduce_mean(train_dataset_2021)
 mean2022 = tf.reduce_mean(train_dataset_2022)
 mean2023 = tf.reduce_mean(train_dataset_2023)
-print("Mean: ", totalMean)
-print("Mean: ", mean2021)
-print("Mean: ", mean2022)
-print("Mean: ", mean2023)
+print("Mean (Total): ", totalMean)
+print("Mean (2021): ", mean2021)
+print("Mean (2022): ", mean2022)
+print("Mean (2023): ", mean2023)
 
 totalVariance = tf.math.reduce_variance(train_dataset)
 var2021 = tf.reduce_mean(train_dataset_2021)

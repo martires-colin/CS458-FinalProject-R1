@@ -70,7 +70,8 @@ confirmed_data_2022 = full_data_2022["Confirmed"]
 confirmed_data_2023 = full_data_2023["Confirmed"]
 confirmed_data = full_data_2023["Confirmed"]
 
-print(sum(confirmed_data))
+print(sum(confirmed_data), "sum confirmed")
+print((confirmed_data))
 
 
 

@@ -8,10 +8,8 @@ import fnmatch
 import numpy as np
 import statistics
 
-
 # Specify path to dataset
 path = './csse_covid_19_daily_reports_us/'
-
 
 file_count = len(fnmatch.filter(os.listdir(path), '*.*'))
 # print('File Count:', file_count)
@@ -95,4 +93,3 @@ print(f'Variance of Confirmed Cases: {variance_sumTensor}')
 print(f'Standard Deviation of Confirmed Cases: {std_sumTensor}')
 print('Variance of confirm', statistics.variance(sumList))
 print(f'Total Number of Confirmed Cases: {sum_sumTensor}')
-#statistics.variance(sumTensor)

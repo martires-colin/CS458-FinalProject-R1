@@ -8,59 +8,6 @@ from util import *
 # Assuming you have cloned the repository and the path is correct
 directory = './csse_covid_19_daily_reports_us/'
 
-# List all CSV files
-csv_files = [f for f in os.listdir(directory) if f.endswith('.csv')]
-csv_files_2021 = [f for f in os.listdir(directory) if f.endswith('2021.csv')]
-csv_files_2022 = [f for f in os.listdir(directory) if f.endswith('2022.csv')]
-csv_files_2023 = [f for f in os.listdir(directory) if f.endswith('2023.csv')]
-
-# print(len(csv_files))
-
-# print(len(csv_files_2021))
-# print(len(csv_files_2022))
-# print(len(csv_files_2023))
-
-# Initialize an empty list to store DataFrames
-dataframes_2021 = []
-dataframes_2022 = []
-dataframes_2023 = []
-dataframes = []
-
-# Read and concatenate data
-for file in csv_files:
-    df = pd.read_csv(directory + file)
-    dataframes.append(df)
-    # print(f"Read {file} with {len(df)} records.")
-for file in csv_files_2021:
-    df = pd.read_csv(directory + file)
-    dataframes_2021.append(df)
-    # print(f"Read {file} with {len(df)} records.")
-for file in csv_files_2022:
-    df = pd.read_csv(directory + file)
-    dataframes_2022.append(df)
-    # print(f"Read {file} with {len(df)} records.")
-for file in csv_files_2023:
-    df = pd.read_csv(directory + file)
-    dataframes_2023.append(df)
-    # print(f"Read {file} with {len(df)} records.")
-    
-# Concatenate all dataframes
-full_data_2021 = pd.concat(dataframes_2021, ignore_index=True)
-full_data_2022 = pd.concat(dataframes_2022, ignore_index=True)
-full_data_2023 = pd.concat(dataframes_2023, ignore_index=True)
-full_data = pd.concat(dataframes, ignore_index=True)
-
-# print(f"Total records after concatenation: {len(full_data_2021)}")
-# print(f"Total records after concatenation: {len(full_data_2022)}")
-# print(f"Total records after concatenation: {len(full_data_2023)}")
-# print(f"Total records after concatenation: {len(full_data)}")
-
-# Data cleaning and transformation
-# Convert categorical columns using Label Encoding or One-Hot Encoding
-# For example, if 'category_column' is a categorical column:
-# label_encoder = LabelEncoder()
-# full_data['category_column'] = label_encoder.fit_transform(full_data['category_column'])
-
 # Handle missing values
 full_data_2021 = full_data_2021.fillna(0)  # Or another appropriate value
 full_data_2022 = full_data_2022.fillna(0)  # Or another appropriate value

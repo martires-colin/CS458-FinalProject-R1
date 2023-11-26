@@ -12,7 +12,7 @@ class CSVDataProcessor:
     def filter_csv_files(self):
         all_files = os.listdir(self.directory)
         valid_files = [f for f in all_files if re.match(
-            r'\d{2}-\d{2}-2022\.csv', f)]
+            r'01-\d{2}-2022\.csv', f)]
         return valid_files
 
     def process_files(self):
@@ -22,7 +22,7 @@ class CSVDataProcessor:
             # Assuming you want the sum of the month data for the year
             year_data.append(sum(month_data))
             month_plot = MonthDisplay(month_data)
-            month_plot.show_plot()  # Display each month
+            #month_plot.show_plot()  # Display each month
 
         year_plot = YearDisplay(year_data)
         year_plot.show_plot()  # Display aggregated year data

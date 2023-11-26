@@ -1,62 +1,148 @@
+import pandas as pd
+import os
+from collections import defaultdict
+from datetime import datetime
+import glob
 import matplotlib.pyplot as plt
-import numpy as np
 
-class MonthDisplay:
-    def __init__(self, month_data):
-        self.month_data = month_data
-        print(self.month_data)
-    def show_plot(self):
-        days = np.arange(1, len(self.month_data) + 1)
-        plt.figure(figsize=(10, 6))
-        plt.plot(days, self.month_data, marker='o')
-        plt.title("Data for the Month")
-        plt.xlabel("Day of the Month")
-        plt.ylabel("Data Value")
-        plt.grid(True)
+
+class YearlyCovidSummary:
+    def __init__(self):
+        self.data = defaultdict(lambda: defaultdict(int))
+
+    def add_file(self, file_path):
+        date_str = os.path.basename(file_path).split('.')[0]
+        date_obj = datetime.strptime(date_str, "%m-%d-%Y")
+
+        df = pd.read_csv(file_path)
+
+        month = date_obj.month
+        year = date_obj.year
+        self.data[year][month] += df['Confirmed'].sum()
+
+    def get_yearly_summary(self, year):
+        return self.data[year]
+
+    def process_directory(self, directory_path):
+        for file_path in glob.glob(os.path.join(directory_path, '*.csv')):
+            self.add_file(file_path)
+    def plot_multiple_years_summary(self, years):
+        num_years = len(years)
+        plt.figure(figsize=(12, 6 * num_years))
+
+        for i, year in enumerate(years, start=1):
+            if year not in self.data:
+                print(f"No data available for the year {year}")
+                continue
+
+            months = range(1, 13)  # Months from January to December
+            cases = [self.data[year][month] for month in months]
+
+            plt.subplot(num_years, 1, i)
+            plt.bar(months, cases, color='blue')
+            plt.ylabel(f'Confirmed Cases in {year}')
+            plt.xticks(months, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
+
+        plt.tight_layout()
         plt.show()
 
-class YearDisplay:
-    def __init__(self, year_data):
-        self.year_data = year_data
 
-    def show_plot(self):
-        months = np.arange(1, len(self.year_data) + 1)
-        plt.figure(figsize=(10, 6))
-        plt.bar(months, self.year_data)
-        plt.title("Data for the Year")
-        plt.xlabel("Month")
-        plt.ylabel("Data Value")
-        plt.xticks(months, ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'])
-        plt.grid(True)
-        plt.show()
+
+class YearlyFileOrganizer:
+    def __init__(self):
+        self.files_by_year = defaultdict(list)
+
+    def add_file(self, file_path):
+        year = datetime.strptime(os.path.basename(
+            file_path).split('.')[0], "%m-%d-%Y").year
+        self.files_by_year[year].append(file_path)
+
+    def get_files_for_year(self, year):
+        return self.files_by_year[year]
+
+    def process_directory(self, directory_path):
+        for file_path in glob.glob(os.path.join(directory_path, '*.csv')):
+            self.add_file(file_path)
+
+
+class RegionalCovidTrends:
+    def __init__(self):
+        self.data = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+
+    def add_file(self, file_path):
+        date_str = os.path.basename(file_path).split('.')[0]
+        date_obj = datetime.strptime(date_str, "%m-%d-%Y")
+
+        df = pd.read_csv(file_path)
+
+        month = date_obj.month
+        year = date_obj.year
+        for _, row in df.iterrows():
+            region = row['Province_State']
+            self.data[region][year][month] += row['Confirmed']
+
+    def process_directory(self, directory_path):
+        for file_path in glob.glob(os.path.join(directory_path, '*.csv')):
+            self.add_file(file_path)
+
+    def plot_all_regions(self, year, regions_per_figure=10):
+        regions = list(self.data.keys())
+        num_regions = len(regions)
+        total_figures = (num_regions + regions_per_figure - 1) // regions_per_figure
+
+        for fig_num in range(total_figures):
+            start_index = fig_num * regions_per_figure
+            end_index = min(start_index + regions_per_figure, num_regions)
+            current_regions = regions[start_index:end_index]
+
+            rows = cols = int(regions_per_figure ** 0.5)
+            fig, axes = plt.subplots(rows, cols, figsize=(15, 15))
+            axes = axes.flatten()
+
+            for i, region in enumerate(current_regions):
+                months = range(1, 13)
+                cases = [self.data[region][year][month] for month in months]
+
+                axes[i].plot(months, cases, marker='o')
+                axes[i].set_title(region)
+                axes[i].set_xticks(months)
+                axes[i].set_xticklabels(['Jn', 'F', 'Mc', 'Ap', 'My', 'Jn', 'Jl', 'Ag', 'Sp', 'Oc', 'Nv', 'Dc'])
+                axes[i].grid(True)
+
+            # Hide unused subplots
+            for j in range(i + 1, len(axes)):
+                axes[j].axis('off')
+
+            plt.tight_layout(pad=3.0)
+            plt.show()
+
 
 # Example usage
-month_data = []  # replace with actual daily data for a month
-year_data = []  # replace with actual monthly data for a year
 
-month_plot = MonthDisplay(month_data)
-month_plot.show_plot()
 
-year_plot = YearDisplay(year_data)
-year_plot.show_plot()#display class 
-import matplotlib.pyplot as plt 
-import pandas as pd
+# Example usage
+summary = YearlyCovidSummary()
+organizer = YearlyFileOrganizer()
 
-class Display:
-    def __init__(self, data):
-        self.data = data
-    
-    def plot_trend(self, data_column, metric):
-        self.data[data_column] = pd.to_datetime(self.data[data_column])
+# Directory containing CSV files
+directory_path = "C:/Users/davis/OneDrive/Desktop/CS WORK/cs458/CS458-FinalProject-R1/csse_covid_19_daily_reports_us"
 
-        trend = self.data.groupby(data_column).sum()[metric]
+summary.process_directory(directory_path)
 
-        plt.figure(figsize= (12, 6))
-        plt.plot(trend, label= metric)
-        plt.legend()
-        plt.grid(True)
-        plt.show()
+organizer.process_directory(directory_path)
+summary.plot_multiple_years_summary([2020, 2021, 2022,2023])
 
-#to use this 
-# Covid_display = Display(fulldata) 
-# Covis_display.plot_trend('last_update', "confirmed")
+# Get summary for a specific year
+print(summary.get_yearly_summary(2020))
+
+# Get files for a specific year
+print(organizer.get_files_for_year(2021))
+trends = RegionalCovidTrends()
+trends.process_directory(directory_path)
+
+# Plot all regions for a specific year
+trends.plot_all_regions(2020, regions_per_figure=16)
+trends.plot_all_regions(2021, regions_per_figure=16)
+trends.plot_all_regions(2022, regions_per_figure=16)
+trends.plot_all_regions(2023, regions_per_figure=16)
+

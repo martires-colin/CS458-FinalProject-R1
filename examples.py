@@ -328,3 +328,117 @@ print(monthlyAvg2021)
 print(monthlyAvg2022)
 print(monthlyAvg2023)
 
+
+
+stateAvg2020 = {}
+
+yearFormat = "2020-0"
+monthformat = 4
+dateFormat = "-30"
+
+for i in range(3,12):
+    if monthformat == 13:
+        break
+    if monthformat == 10:
+        yearFormat = "2020-"
+
+    monthStringFormat = str(monthformat)
+    finalFormat = yearFormat + monthStringFormat + dateFormat
+    print(finalFormat)
+    monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
+    print(monthlyDF)
+
+    stateAvg2020[finalFormat] = []
+
+    if monthformat == 4:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/18
+            stateAvg2020[finalFormat].append(avg)
+
+    else:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/30
+            stateAvg2020[finalFormat].append(avg)
+
+  
+    # avg = sum(monthlyDF["Confirmed"])/30
+    # monthlyAvg2020[finalFormat] = avg
+    monthformat += 1
+
+    
+    
+
+stateAvg2021 = {}
+
+yearFormat = "2021-0"
+monthformat = 1
+dateFormat = "-30"
+
+for i in range(12):
+    if monthformat == 13:
+        break
+    if monthformat == 10:
+        yearFormat = "2021-"
+
+    monthStringFormat = str(monthformat)
+    finalFormat = yearFormat + monthStringFormat + dateFormat
+    print(finalFormat)
+    monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
+    print(monthlyDF)
+
+    stateAvg2021[finalFormat] = []
+
+    if monthformat == 2:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/28
+            stateAvg2021[finalFormat].append(avg)
+
+    else:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/30
+            stateAvg2021[finalFormat].append(avg)
+
+  
+    # avg = sum(monthlyDF["Confirmed"])/30
+    # monthlyAvg2020[finalFormat] = avg
+    monthformat += 1
+    
+
+stateAvg2022 = {}
+
+yearFormat = "2022-0"
+monthformat = 1
+dateFormat = "-30"
+
+for i in range(12):
+    if monthformat == 13:
+        break
+    if monthformat == 10:
+        yearFormat = "2022-"
+
+    monthStringFormat = str(monthformat)
+    finalFormat = yearFormat + monthStringFormat + dateFormat
+    print(finalFormat)
+    monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
+    print(monthlyDF)
+
+    stateAvg2022[finalFormat] = []
+
+    if monthformat == 2:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/28
+            stateAvg2022[finalFormat].append(avg)
+
+    else:
+        for j in monthlyDF["Confirmed"]:
+            avg = j/30
+            stateAvg2022[finalFormat].append(avg)
+
+  
+    # avg = sum(monthlyDF["Confirmed"])/30
+    # monthlyAvg2020[finalFormat] = avg
+    monthformat += 1
+    
+
+
+print(stateAvg2022)

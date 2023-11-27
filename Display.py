@@ -152,9 +152,11 @@ directory_path = "C:/Users/davis/OneDrive/Desktop/CS WORK/cs458/CS458-FinalProje
 summary.process_directory(directory_path)
 
 organizer.process_directory(directory_path)
-# summary.plot_multiple_years_summary([2020, 2021, 2022,2023])
+# summary.plot_multiple_years_summary([2021])
+# summary.plot_multiple_years_summary([2022])
+# summary.plot_multiple_years_summary([2023])
 
-# Get summary for a specific year
+# # Get summary for a specific year
 # print(summary.get_yearly_summary(2020))
 
 # # Get files for a specific year
@@ -219,6 +221,7 @@ trends = MonthlyRegoinalTrends()
 trends.process_directory(directory_path)
 
 # Plot daily trends for a specific region, year, and month
-# Example: California in April 2020
-trends.plot_region_daily('California', 2021, 4)
-trends.plot_region_daily('California', 2021, 5)
+# Example: nevada in April 2020
+for x in range(1, 13):
+    trends.plot_region_daily('Nevada', 2022, x)
+

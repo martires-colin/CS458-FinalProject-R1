@@ -1,5 +1,6 @@
 import pandas as pd
 from util import generateDataframe
+import matplotlib.pyplot as plt
 
 # Read US populations dataset
 filename = 'NST-EST2022-ALLDATA.csv'
@@ -30,6 +31,26 @@ def calculateConfirmedPerCapita(row):
     return numConfirmed / targetStatePopulation
 
 df['confirmed_per_capita'] = df.apply(calculateConfirmedPerCapita, axis=1)
+df = df.filter(items=['Province_State', 'Confirmed', '_date', 'confirmed_per_capita'])
+df['_date'] = pd.to_datetime(df['_date'])
+df = df.sort_values(by=['_date'])
+# print(df)
 
-# print(df.sort_values(by=['confirmed_per_capita'], ascending=False))
-print(df)
+# # Visualize Data - Nevada
+df_nv = df[df.Province_State == 'Nevada']
+df_nv.plot(x="_date", y="confirmed_per_capita")
+plt.plot(df_nv["_date"], df_nv["confirmed_per_capita"])
+plt.xlabel("Date")
+plt.ylabel("Confirmed Cases per Capita")
+plt.title("Nevada Confirmed Cases per Capita")
+plt.show()
+
+# Gnerate Side Bar Graph - US States Confirmed Cases per Capita as of 2023-02-28
+df_lastEntry = df[df._date == pd.to_datetime('2023-02-28')]
+df_lastEntry = df_lastEntry.sort_values(by=['confirmed_per_capita'])
+plt.figure(figsize=(12, 9))
+plt.barh(y=df_lastEntry['Province_State'], width=df_lastEntry['confirmed_per_capita'])
+plt.xlabel("Confirmed Cases per Capita")
+plt.ylabel("State")
+plt.title("US States Confirmed Cases per Capita as of 2023-02-28")
+plt.show()

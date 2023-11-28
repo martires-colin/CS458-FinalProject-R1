@@ -194,6 +194,10 @@ print(overallStats2023)
 
 df = generateDataframe(path=path)
 
+# Filter out provinces
+provinceList = ['American Samoa', 'Diamond Princess', 'Grand Princess', 'Guam', 'Northern Mariana Islands', 'Puerto Rico', 'Recovered', 'Virgin Islands']
+df = df[~df.Province_State.isin(provinceList)]
+
 df['_date'] = pd.to_datetime(df['_date'], format='%m-%d-%Y')
 
 testFormat = "2020-4-30"
@@ -441,4 +445,3 @@ for i in range(12):
     
 
 
-print(stateAvg2022)

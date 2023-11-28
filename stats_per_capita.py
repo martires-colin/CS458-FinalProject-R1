@@ -20,7 +20,6 @@ df = df[df._date.str.contains('|'.join(monthEndDates))]
 
 def calculateConfirmedPerCapita(row):
     targetState = row["Province_State"]
-
     if("2020" in row._date):
         targetStatePopulation = population_data.loc[population_data['NAME'] == targetState, 'POPESTIMATE2020'].item()
     elif("2021" in row._date):
@@ -34,11 +33,11 @@ df['confirmed_per_capita'] = df.apply(calculateConfirmedPerCapita, axis=1)
 df = df.filter(items=['Province_State', 'Confirmed', '_date', 'confirmed_per_capita'])
 df['_date'] = pd.to_datetime(df['_date'])
 df = df.sort_values(by=['_date'])
-# print(df)
+print(df)
 
 # # Visualize Data - Nevada
 df_nv = df[df.Province_State == 'Nevada']
-df_nv.plot(x="_date", y="confirmed_per_capita")
+plt.figure(figsize=(10, 5))
 plt.plot(df_nv["_date"], df_nv["confirmed_per_capita"])
 plt.xlabel("Date")
 plt.ylabel("Confirmed Cases per Capita")
@@ -53,4 +52,16 @@ plt.barh(y=df_lastEntry['Province_State'], width=df_lastEntry['confirmed_per_cap
 plt.xlabel("Confirmed Cases per Capita")
 plt.ylabel("State")
 plt.title("US States Confirmed Cases per Capita as of 2023-02-28")
+plt.show()
+
+# Plot trend in confirmed cases per capita for all 50 States
+state_names = ["Alaska", "Alabama", "Arkansas", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", "North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
+plt.figure(figsize=(15, 12))
+for state in state_names:
+    df_state = df[df.Province_State == state]
+    plt.plot(df_state["_date"], df_state["confirmed_per_capita"], label=state)
+plt.legend(loc='upper left', ncol=3)
+plt.xlabel("Date")
+plt.ylabel("Confirmed Cases per Capita")
+plt.title("US States Confirmed Cases per Capita")
 plt.show()

@@ -2,7 +2,7 @@ import pandas as pd
 from util import generateDataframe
 
 # Read US populations dataset
-filename = 'us-state-populations.csv'
+filename = 'NST-EST2022-ALLDATA.csv'
 population_data = pd.read_csv(filename)
 
 # Read COVID dataset
@@ -19,9 +19,17 @@ df = df[df._date.str.contains('|'.join(monthEndDates))]
 
 def calculateConfirmedPerCapita(row):
     targetState = row["Province_State"]
-    targetStatePopulation = population_data.loc[population_data['state'] == targetState, 'pop_2014'].item()
+
+    if("2020" in row._date):
+        targetStatePopulation = population_data.loc[population_data['NAME'] == targetState, 'POPESTIMATE2020'].item()
+    elif("2021" in row._date):
+        targetStatePopulation = population_data.loc[population_data['NAME'] == targetState, 'POPESTIMATE2021'].item()
+    else:
+        targetStatePopulation = population_data.loc[population_data['NAME'] == targetState, 'POPESTIMATE2022'].item()
     numConfirmed = row['Confirmed']
     return numConfirmed / targetStatePopulation
 
 df['confirmed_per_capita'] = df.apply(calculateConfirmedPerCapita, axis=1)
+
+# print(df.sort_values(by=['confirmed_per_capita'], ascending=False))
 print(df)

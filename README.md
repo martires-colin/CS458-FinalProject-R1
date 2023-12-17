@@ -40,7 +40,7 @@ python display.py
 to get the raw data stats and display dataframes of the covid cases on state and monthly avg use
 
 ```bash
-python3 examples.py
+python examples.py
 ```
 
 1. Prints out mean, std, var for 2020-23

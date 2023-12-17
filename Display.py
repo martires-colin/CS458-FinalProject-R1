@@ -147,7 +147,7 @@ summary = YearlyCovidSummary()
 organizer = YearlyFileOrganizer()
 
 # Directory containing CSV files
-directory_path = "C:/Users/davis/OneDrive/Desktop/CS WORK/cs458/CS458-FinalProject-R1/csse_covid_19_daily_reports_us"
+directory_path = "./csse_covid_19_daily_reports_us"
 
 summary.process_directory(directory_path)
 

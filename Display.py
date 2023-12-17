@@ -223,6 +223,6 @@ trends.process_directory(directory_path)
 
 # Plot daily trends for a specific region, year, and month
 # Example: nevada in April 2020
-#for x in range(1, 13):
-#    trends.plot_region_daily('Nevada', 2022, x)
+for x in range(1, 13):
+    trends.plot_region_daily('Nevada', 2022, x)
 

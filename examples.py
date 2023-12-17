@@ -147,32 +147,6 @@ sumTensor = tf.convert_to_tensor(sumList, dtype="float")
 sumTensor = tf.convert_to_tensor(sumList, dtype="float")
 mean_sumTensor = tf.math.reduce_mean(sumTensor)
 
-print("Stats for overall across 3 years")
-overallStats["Mean"] = statistics.mean(sumList) 
-overallStats["Variance"] = statistics.variance(sumList) 
-overallStats["Standard Deviation"] = statistics.stdev(sumList)
-
-print("Stats for 2020")
-overallStats2020["Mean"] = statistics.mean(sumList2020) 
-overallStats2020["Variance"] = statistics.variance(sumList2020) 
-overallStats2020["Standard Deviation"] = statistics.stdev(sumList2020)
-
-
-print("Stats for 2021")
-overallStats2021["Mean"] = statistics.mean(sumList2021) 
-overallStats2021["Variance"] = statistics.variance(sumList2021) 
-overallStats2021["Standard Deviation"] = statistics.stdev(sumList2021)
-
-print("Stats for 2022")
-overallStats2022["Mean"] = statistics.mean(sumList2022) 
-overallStats2022["Variance"] = statistics.variance(sumList2022) 
-overallStats2022["Standard Deviation"] = statistics.stdev(sumList2022)
-
-print("Stats for 2023")
-overallStats2023["Mean"] = statistics.mean(sumList2023) 
-overallStats2023["Variance"] = statistics.variance(sumList2023) 
-overallStats2023["Standard Deviation"] = statistics.stdev(sumList2023)
-
 
 
 sum_sumTensor = tf.math.reduce_sum(sumTensor)
@@ -320,6 +294,39 @@ for i in range(3):
     avg = sum(monthlyDF["Confirmed"])/30
     monthlyAvg2023[finalFormat] = avg
     monthformat += 1
+
+
+print("Stats for overall across 3 years")
+overallStats["Mean"] = statistics.mean(sumList) 
+overallStats["Variance"] = statistics.variance(sumList) 
+overallStats["Standard Deviation"] = statistics.stdev(sumList)
+
+print("Stats for 2020")
+overallStats2020["Mean"] = statistics.mean(sumList2020) 
+overallStats2020["Variance"] = statistics.variance(sumList2020) 
+overallStats2020["Standard Deviation"] = statistics.stdev(sumList2020)
+print(overallStats2020)
+
+
+print("Stats for 2021")
+overallStats2021["Mean"] = statistics.mean(sumList2021) 
+overallStats2021["Variance"] = statistics.variance(sumList2021) 
+overallStats2021["Standard Deviation"] = statistics.stdev(sumList2021)
+print(overallStats2021)
+
+print("Stats for 2022")
+overallStats2022["Mean"] = statistics.mean(sumList2022) 
+overallStats2022["Variance"] = statistics.variance(sumList2022) 
+overallStats2022["Standard Deviation"] = statistics.stdev(sumList2022)
+print(overallStats2022)
+
+print("Stats for 2023")
+overallStats2023["Mean"] = statistics.mean(sumList2023) 
+overallStats2023["Variance"] = statistics.variance(sumList2023) 
+overallStats2023["Standard Deviation"] = statistics.stdev(sumList2023)
+print(overallStats2023)
+
+
 
 print("Mobthly Avgs for 2020")
 print(monthlyAvg2020)

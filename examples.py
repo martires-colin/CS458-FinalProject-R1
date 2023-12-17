@@ -7,31 +7,15 @@ from util import *
 import fnmatch
 import numpy as np
 import statistics
+import json
+import matplotlib.pyplot as plt
+import matplotlib.ticker as ticker
 
 # Specify path to dataset
 path = './csse_covid_19_daily_reports_us/'
 
 file_count = len(fnmatch.filter(os.listdir(path), '*.*'))
 # print('File Count:', file_count)
-
-# # Extract dataframes from dataset
-# data_2021_confirmed = generateDataframe(path=path, year="2021", column_name="Confirmed")
-
-# # Convert dataframe to tensor
-# tf_2021_confirmed = tf.convert_to_tensor(data_2021_confirmed, dtype="float")
-
-# # Find mean of data
-# mean_2021_confirmed = tf.math.reduce_mean(tf_2021_confirmed)
-# print(f'2021 Confirmed Mean: {mean_2021_confirmed}')
-
-# # Find variance of data
-# var_2021_confirmed = tf.math.reduce_variance(tf_2021_confirmed)
-# print(f'2021 Confirmed Variance: {var_2021_confirmed}')
-
-# # Find standard deviation of data
-# sd_2021_confirmed = tf.math.reduce_std(tf_2021_confirmed)
-# print(f'2021 Confirmed Standard Deviation: {sd_2021_confirmed}')
-
 
 # Get MEAN
 data_March9_2023 = generateDataframe(path=path, year="03-09-2023", column_name="Confirmed")
@@ -76,6 +60,8 @@ sumList2023 = []
 prev_sum = 0
 prev_conf = []
 
+#processing data to turn comeulative data into iterative data 
+
 while i < len(data_confirmed_2020) - 58:
 
     confirmedSum = sum(data_confirmed_2020[i:j])
@@ -102,6 +88,9 @@ prev_sum = 0
 i = 0
 j = 58
 
+#processing data to turn comeulative data into iterative data 
+
+
 while i < len(data_confirmed_2021) - 58:
 
     confirmedSum = sum(data_confirmed_2021[i:j])
@@ -115,6 +104,9 @@ prev_sum = 0
 i = 0
 j = 58
 
+#processing data to turn comeulative data into iterative data 
+
+
 while i < len(data_confirmed_2022) - 58:
 
     confirmedSum = sum(data_confirmed_2022[i:j])
@@ -127,6 +119,10 @@ while i < len(data_confirmed_2022) - 58:
 prev_sum = 0
 i = 0
 j = 58
+
+
+#processing data to turn comeulative data into iterative data 
+
 
 while i < len(data_confirmed_2023) - 58:
 
@@ -151,26 +147,31 @@ sumTensor = tf.convert_to_tensor(sumList, dtype="float")
 sumTensor = tf.convert_to_tensor(sumList, dtype="float")
 mean_sumTensor = tf.math.reduce_mean(sumTensor)
 
+print("Stats for overall across 3 years")
 overallStats["Mean"] = statistics.mean(sumList) 
 overallStats["Variance"] = statistics.variance(sumList) 
-overallStats["Std"] = statistics.stdev(sumList)
+overallStats["Standard Deviation"] = statistics.stdev(sumList)
 
+print("Stats for 2020")
 overallStats2020["Mean"] = statistics.mean(sumList2020) 
 overallStats2020["Variance"] = statistics.variance(sumList2020) 
-overallStats2020["Std"] = statistics.stdev(sumList2020)
+overallStats2020["Standard Deviation"] = statistics.stdev(sumList2020)
 
 
+print("Stats for 2021")
 overallStats2021["Mean"] = statistics.mean(sumList2021) 
 overallStats2021["Variance"] = statistics.variance(sumList2021) 
-overallStats2021["Std"] = statistics.stdev(sumList2021)
+overallStats2021["Standard Deviation"] = statistics.stdev(sumList2021)
 
+print("Stats for 2022")
 overallStats2022["Mean"] = statistics.mean(sumList2022) 
 overallStats2022["Variance"] = statistics.variance(sumList2022) 
-overallStats2022["Std"] = statistics.stdev(sumList2022)
+overallStats2022["Standard Deviation"] = statistics.stdev(sumList2022)
 
+print("Stats for 2023")
 overallStats2023["Mean"] = statistics.mean(sumList2023) 
 overallStats2023["Variance"] = statistics.variance(sumList2023) 
-overallStats2023["Std"] = statistics.stdev(sumList2023)
+overallStats2023["Standard Deviation"] = statistics.stdev(sumList2023)
 
 
 
@@ -185,22 +186,21 @@ variance_sumTensor = tf.math.reduce_variance(sumTensor)
 # print('Variance of confirm', statistics.variance(sumList))
 # print(f'Total Number of Confirmed Cases: {sum_sumTensor}')
 
-print(overallStats)
-print(overallStats2020)
-print(overallStats2021)
-print(overallStats2022)
-print(overallStats2023)
+# print(overallStats)
+# print(overallStats2020)
+# print(overallStats2021)
+# print(overallStats2022)
+# print(overallStats2023)
 
 
 df = generateDataframe(path=path)
+
+#processing to get monthly avg data 
 
 df['_date'] = pd.to_datetime(df['_date'], format='%m-%d-%Y')
 
 testFormat = "2020-4-30"
 df_apr_2020 = df[df['_date'].dt.strftime('%Y-%m-%d') == '2020-04-30']
-print(df_apr_2020)
-print("april avg", sum(df_apr_2020["Confirmed"])/18)
-
 monthlyAvg2020 = {}
 
 yearFormat = "2020-0"
@@ -208,7 +208,6 @@ monthformat = 4
 dateFormat = "-30"
 
 df_may_2020 = df[df['_date'].dt.strftime('%Y-%m-%d') == '2020-05-30']
-print(df_may_2020)
 print("may avg", sum(df_apr_2020["Confirmed"])/30)
 
 
@@ -221,9 +220,8 @@ for i in range(3,12):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
+  
     monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
-    print(monthlyDF)
     if monthformat == 4:
         avg = sum(monthlyDF["Confirmed"])/18
         monthlyAvg2020[finalFormat] = avg
@@ -246,13 +244,10 @@ for i in range(12):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
     if monthformat == 2:
          monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == "2021-04-28"]
     else:
          monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
-
-    print(monthlyDF)
     if monthformat == 2:
         avg = sum(monthlyDF["Confirmed"])/28
         monthlyAvg2021[finalFormat] = avg
@@ -301,7 +296,6 @@ for i in range(3):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
 
     if monthformat == 3:
          monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == "2023-03-09"]
@@ -323,9 +317,13 @@ for i in range(3):
     monthlyAvg2023[finalFormat] = avg
     monthformat += 1
 
+print("Mobthly Avgs for 2020")
 print(monthlyAvg2020)
+print("Mobthly Avgs for 2022")
 print(monthlyAvg2021)
+print("Mobthly Avgs for 2022")
 print(monthlyAvg2022)
+print("Mobthly Avgs for 2023")
 print(monthlyAvg2023)
 
 
@@ -344,9 +342,8 @@ for i in range(3,12):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
+
     monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
-    print(monthlyDF)
 
     stateAvg2020[finalFormat] = []
 
@@ -382,9 +379,8 @@ for i in range(12):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
+
     monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
-    print(monthlyDF)
 
     stateAvg2021[finalFormat] = []
 
@@ -418,9 +414,7 @@ for i in range(12):
 
     monthStringFormat = str(monthformat)
     finalFormat = yearFormat + monthStringFormat + dateFormat
-    print(finalFormat)
     monthlyDF =  df[df['_date'].dt.strftime('%Y-%m-%d') == finalFormat]
-    print(monthlyDF)
 
     stateAvg2022[finalFormat] = []
 
@@ -441,4 +435,95 @@ for i in range(12):
     
 
 
-print(stateAvg2022)
+
+
+f = open('/Users/jefrinjojan/CS458-FinalProject-R1/us-states-population.json')
+
+data = json.load(f)
+
+states ={}
+for i in data:
+    var = data[i]
+    states[var["state"]] = var["pop_2014"]
+    
+
+
+
+stateAvgCapita = {}
+
+
+
+class StatsPlotter:
+    def init(self):
+        pass
+
+    def plot_stats(self, stats_dict):
+        if not all(key in stats_dict for key in ['Mean', 'Variance', 'Standard Deviation']):
+            raise ValueError("The dictionary must contain 'Mean', 'Variance', and 'Standard Deviation' keys")
+
+        labels = list(stats_dict.keys())
+        values = [stats_dict[key] for key in labels]
+
+        print(values)
+
+        plt.figure(figsize=(10, 6))
+        plt.bar(labels, values, color=['blue', 'green', 'red'])
+        plt.xlabel('Statistic')
+        plt.ylabel('Value')
+        plt.title('Statistical Analysis')
+        plt.show()
+
+
+    def plot_monthly_avg(self, monthly_avg_dict):
+        months = list(monthly_avg_dict.keys())
+        averages = [monthly_avg_dict[month] for month in months]
+
+        plt.figure(figsize=(12, 6))
+        plt.plot(months, averages, marker='o')
+        plt.xlabel('Month')
+        plt.ylabel('Average')
+        plt.title('Monthly Average for 2020')
+        plt.ylim(0, 3000000)
+        plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(100000))
+        plt.xticks(rotation=45)
+        plt.grid(True)
+        plt.tight_layout()
+        plt.show() 
+
+    # def plot_monthly_avg(self, monthly_avg_dict):
+    #     months = list(monthly_avg_dict.keys())
+    #     values = [monthly_avg_dict[month] for month in months]
+
+    #     plt.figure(figsize=(12, 6))
+    #     plt.plot(months, values, marker='o', linestyle='-')
+    #     plt.xlabel('Month')
+    #     plt.ylabel('Average Value')
+    #     plt.title('Monthly Average for 2020')
+    #     plt.xticks(rotation=45)
+    #     plt.grid(True)
+    #     plt.tight_layout()
+    #     plt.show() 
+
+
+print("Overall Stats over 3 years ")
+print(overallStats)
+print("Overall Stats for 2020")
+print(overallStats2020)
+print("Overall Stats for 2021")
+print(overallStats2021)
+print("Overall Stats for 2022")
+print(overallStats2022)
+print("Overall Stats for 2023")
+print(overallStats2023)
+
+# plotter = StatsPlotter()
+# plotter.plot_monthly_avg(monthlyAvg2020)
+# plotter.plot_monthly_avg(monthlyAvg2021)
+# plotter.plot_monthly_avg(monthlyAvg2022)
+# plotter.plot_monthly_avg(monthlyAvg2023)
+
+# array = [1,2,3,4,5, 100000000]
+
+# print(statistics.stdev(array))
+
+

@@ -69,6 +69,8 @@ train_dataset = tf.convert_to_tensor(train_data, dtype="float")
 # print(eval_dataset_2023)
 # print(eval_dataset)
 
+
+
 totalMean = tf.reduce_mean(train_dataset)
 mean2021 = tf.reduce_mean(train_dataset_2021)
 mean2022 = tf.reduce_mean(train_dataset_2022)

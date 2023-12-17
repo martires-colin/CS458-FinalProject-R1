@@ -33,17 +33,18 @@ python display.py
 
 1. this graph will display 2020 to 2023 overall comfirmed cases 
 
-2. regional trends for the year 2022 (it will pring in a 16 by 16 there will be multiple pages)
+2. regional trends for the year 2022 (it will bring in a 16 by 16 there will be multiple pages)
 
-3. nevada daily confrimed cases on a monthly basis. (there will be a page per month.)
+3. Nevada daily confrimed cases on a monthly basis. (there will be a page per month.)
 
-to get the raw data stats and display dataframes of thec covid cases on state and monthly avg use
+to get the raw data stats and display dataframes of the covid cases on state and monthly avg use
+
 ```bash
 python3 examples.py
 ```
 
 1. Prints out mean, std, var for 2020-23
 
-2. Displays monthly avg data for 2020-23
+2. Displays monthly average data for 2020-23
 
 3. Displays Dataframes for each state with its info

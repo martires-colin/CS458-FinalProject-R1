@@ -39,9 +39,9 @@ df_2023 = df[df['_date'].dt.strftime('%Y') == '2023']
 # just add on to the strftime filter
 # Ex: get Jan 2021
 df_jan_2021 = df[df['_date'].dt.strftime('%Y-%m') == '2021-01']
-print(df_jan_2021)
+# print(df_jan_2021)
 
 # Same for Specific Day
 # Ex: get Jan 31, 2021
 df_jan31_2021 = df[df['_date'].dt.strftime('%Y-%m-%d') == '2021-01-31']
-print(df_jan31_2021)
+# print(df_jan31_2021)

@@ -4,6 +4,7 @@ from collections import defaultdict
 from datetime import datetime
 import glob
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 
 class YearlyCovidSummary:
@@ -46,8 +47,6 @@ class YearlyCovidSummary:
         plt.tight_layout()
         plt.show()
 
-
-
 class YearlyFileOrganizer:
     def __init__(self):
         self.files_by_year = defaultdict(list)
@@ -84,6 +83,29 @@ class RegionalCovidTrends:
     def process_directory(self, directory_path):
         for file_path in glob.glob(os.path.join(directory_path, '*.csv')):
             self.add_file(file_path)
+
+    def plot_region_daily(self, region, year, month):
+        if region not in self.daily_data:
+            print(f"No data available for {region}")
+            return
+
+        dates = [date for date in self.daily_data[region].keys(
+        ) if date.year == year and date.month == month]
+        dates.sort()
+        cases = [self.daily_data[region][date] for date in dates]
+
+        plt.figure(figsize=(15, 6))
+        plt.plot(dates, cases, marker='o')
+        plt.xlabel('Date')
+        plt.ylabel('Confirmed Cases')
+        plt.title(
+            f'Daily COVID-19 Confirmed Cases in {region} ({month}/{year})')
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+        plt.grid(True)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
 
     def plot_all_regions(self, year, regions_per_figure=10):
         regions = list(self.data.keys())
@@ -130,19 +152,77 @@ directory_path = "C:/Users/davis/OneDrive/Desktop/CS WORK/cs458/CS458-FinalProje
 summary.process_directory(directory_path)
 
 organizer.process_directory(directory_path)
-summary.plot_multiple_years_summary([2020, 2021, 2022,2023])
+summary.plot_multiple_years_summary([2020])
+summary.plot_multiple_years_summary([2021])
+summary.plot_multiple_years_summary([2022])
+summary.plot_multiple_years_summary([2023])
 
-# Get summary for a specific year
-print(summary.get_yearly_summary(2020))
+# # Get summary for a specific year
+# print(summary.get_yearly_summary(2020))
 
-# Get files for a specific year
-print(organizer.get_files_for_year(2021))
+# # Get files for a specific year
+# print(organizer.get_files_for_year(2021))
 trends = RegionalCovidTrends()
 trends.process_directory(directory_path)
 
 # Plot all regions for a specific year
-trends.plot_all_regions(2020, regions_per_figure=16)
-trends.plot_all_regions(2021, regions_per_figure=16)
+#trends.plot_all_regions(2020, regions_per_figure=16)
+#trends.plot_all_regions(2021, regions_per_figure=16)
 trends.plot_all_regions(2022, regions_per_figure=16)
-trends.plot_all_regions(2023, regions_per_figure=16)
+#trends.plot_all_regions(2023, regions_per_figure=16)
+
+class MonthlyRegoinalTrends:
+    def __init__(self):
+        # Dictionary to store monthly and daily data
+        self.monthly_data = defaultdict(lambda: defaultdict(lambda: defaultdict(int)))
+        self.daily_data = defaultdict(lambda: defaultdict(int))
+
+    def add_file(self, file_path):
+        date_str = os.path.basename(file_path).split('.')[0]
+        date_obj = datetime.strptime(date_str, "%m-%d-%Y")
+
+        df = pd.read_csv(file_path)
+
+        month = date_obj.month
+        year = date_obj.year
+        for _, row in df.iterrows():
+            region = row['Province_State']
+            self.monthly_data[region][year][month] += row['Confirmed']
+            self.daily_data[region][date_obj] += row['Confirmed']
+
+    def process_directory(self, directory_path):
+        for file_path in glob.glob(os.path.join(directory_path, '*.csv')):
+            self.add_file(file_path)
+
+    def plot_region_daily(self, region, year, month):
+        if region not in self.daily_data:
+            print(f"No data available for {region}")
+            return
+
+        dates = [date for date in self.daily_data[region].keys() if date.year == year and date.month == month]
+        dates.sort()
+        cases = [self.daily_data[region][date] for date in dates]
+
+        plt.figure(figsize=(15, 6))
+        plt.plot(dates, cases, marker='o')
+        plt.xlabel('Date')
+        plt.ylabel('Confirmed Cases')
+        plt.title(f'Daily COVID-19 Confirmed Cases in {region} ({month}/{year})')
+        plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d'))
+        plt.gca().xaxis.set_major_locator(mdates.DayLocator())
+        plt.grid(True)
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+
+ 
+
+# Example usage
+trends = MonthlyRegoinalTrends()
+trends.process_directory(directory_path)
+
+# Plot daily trends for a specific region, year, and month
+# Example: nevada in April 2020
+#for x in range(1, 13):
+#    trends.plot_region_daily('Nevada', 2022, x)
 

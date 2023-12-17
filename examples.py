@@ -195,6 +195,10 @@ variance_sumTensor = tf.math.reduce_variance(sumTensor)
 
 df = generateDataframe(path=path)
 
+# Filter out provinces
+provinceList = ['American Samoa', 'Diamond Princess', 'Grand Princess', 'Guam', 'Northern Mariana Islands', 'Puerto Rico', 'Recovered', 'Virgin Islands']
+df = df[~df.Province_State.isin(provinceList)]
+
 #processing to get monthly avg data 
 
 df['_date'] = pd.to_datetime(df['_date'], format='%m-%d-%Y')
@@ -433,97 +437,5 @@ for i in range(12):
     # monthlyAvg2020[finalFormat] = avg
     monthformat += 1
     
-
-
-
-
-f = open('/Users/jefrinjojan/CS458-FinalProject-R1/us-states-population.json')
-
-data = json.load(f)
-
-states ={}
-for i in data:
-    var = data[i]
-    states[var["state"]] = var["pop_2014"]
-    
-
-
-
-stateAvgCapita = {}
-
-
-
-class StatsPlotter:
-    def init(self):
-        pass
-
-    def plot_stats(self, stats_dict):
-        if not all(key in stats_dict for key in ['Mean', 'Variance', 'Standard Deviation']):
-            raise ValueError("The dictionary must contain 'Mean', 'Variance', and 'Standard Deviation' keys")
-
-        labels = list(stats_dict.keys())
-        values = [stats_dict[key] for key in labels]
-
-        print(values)
-
-        plt.figure(figsize=(10, 6))
-        plt.bar(labels, values, color=['blue', 'green', 'red'])
-        plt.xlabel('Statistic')
-        plt.ylabel('Value')
-        plt.title('Statistical Analysis')
-        plt.show()
-
-
-    def plot_monthly_avg(self, monthly_avg_dict):
-        months = list(monthly_avg_dict.keys())
-        averages = [monthly_avg_dict[month] for month in months]
-
-        plt.figure(figsize=(12, 6))
-        plt.plot(months, averages, marker='o')
-        plt.xlabel('Month')
-        plt.ylabel('Average')
-        plt.title('Monthly Average for 2020')
-        plt.ylim(0, 3000000)
-        plt.gca().yaxis.set_major_locator(ticker.MultipleLocator(100000))
-        plt.xticks(rotation=45)
-        plt.grid(True)
-        plt.tight_layout()
-        plt.show() 
-
-    # def plot_monthly_avg(self, monthly_avg_dict):
-    #     months = list(monthly_avg_dict.keys())
-    #     values = [monthly_avg_dict[month] for month in months]
-
-    #     plt.figure(figsize=(12, 6))
-    #     plt.plot(months, values, marker='o', linestyle='-')
-    #     plt.xlabel('Month')
-    #     plt.ylabel('Average Value')
-    #     plt.title('Monthly Average for 2020')
-    #     plt.xticks(rotation=45)
-    #     plt.grid(True)
-    #     plt.tight_layout()
-    #     plt.show() 
-
-
-print("Overall Stats over 3 years ")
-print(overallStats)
-print("Overall Stats for 2020")
-print(overallStats2020)
-print("Overall Stats for 2021")
-print(overallStats2021)
-print("Overall Stats for 2022")
-print(overallStats2022)
-print("Overall Stats for 2023")
-print(overallStats2023)
-
-# plotter = StatsPlotter()
-# plotter.plot_monthly_avg(monthlyAvg2020)
-# plotter.plot_monthly_avg(monthlyAvg2021)
-# plotter.plot_monthly_avg(monthlyAvg2022)
-# plotter.plot_monthly_avg(monthlyAvg2023)
-
-# array = [1,2,3,4,5, 100000000]
-
-# print(statistics.stdev(array))
 
 

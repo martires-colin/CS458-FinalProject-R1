@@ -152,9 +152,10 @@ directory_path = "C:/Users/davis/OneDrive/Desktop/CS WORK/cs458/CS458-FinalProje
 summary.process_directory(directory_path)
 
 organizer.process_directory(directory_path)
-# summary.plot_multiple_years_summary([2021])
-# summary.plot_multiple_years_summary([2022])
-# summary.plot_multiple_years_summary([2023])
+summary.plot_multiple_years_summary([2020])
+summary.plot_multiple_years_summary([2021])
+summary.plot_multiple_years_summary([2022])
+summary.plot_multiple_years_summary([2023])
 
 # # Get summary for a specific year
 # print(summary.get_yearly_summary(2020))
@@ -165,10 +166,10 @@ trends = RegionalCovidTrends()
 trends.process_directory(directory_path)
 
 # Plot all regions for a specific year
-# trends.plot_all_regions(2020, regions_per_figure=16)
-# trends.plot_all_regions(2021, regions_per_figure=16)
-# trends.plot_all_regions(2022, regions_per_figure=16)
-# trends.plot_all_regions(2023, regions_per_figure=16)
+#trends.plot_all_regions(2020, regions_per_figure=16)
+#trends.plot_all_regions(2021, regions_per_figure=16)
+trends.plot_all_regions(2022, regions_per_figure=16)
+#trends.plot_all_regions(2023, regions_per_figure=16)
 
 class MonthlyRegoinalTrends:
     def __init__(self):
@@ -222,6 +223,6 @@ trends.process_directory(directory_path)
 
 # Plot daily trends for a specific region, year, and month
 # Example: nevada in April 2020
-for x in range(1, 13):
-    trends.plot_region_daily('Nevada', 2022, x)
+#for x in range(1, 13):
+#    trends.plot_region_daily('Nevada', 2022, x)
 

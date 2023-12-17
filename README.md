@@ -25,3 +25,14 @@ This will generate 4 graphs:
 3. Top 5 and Bottom 5 US States for Number of Confirmed Cases Per Capita
 
 4. Overall view of the increase in confirmed cases per capita for all 50 states
+
+to analyze the daily stats of nevada for an entire year overall confirmed cases:
+```bash
+python display.py
+```
+
+1. this graph will display 2020 to 2023 overall comfirmed cases 
+
+2. regional trends for the year 2022 (it will pring in a 16 by 16 there will be multiple pages)
+
+3. nevada daily confrimed cases on a monthly basis. (there will be a page per month.)
